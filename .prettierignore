@@ -1,0 +1,16 @@
+/dist
+**/node_modules/**
+**/*.svg
+**/*.ico
+package.json
+package-lock.json
+.DS_Store
+.eslintignore
+*.png
+.editorconfig
+.gitignore
+.prettierignore
+.eslintcache
+*.lock
+yarn-error.log
+
