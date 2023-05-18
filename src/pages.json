@@ -6,18 +6,30 @@
       "style": {
         "navigationBarTitleText": "首页"
       }
-    },
-    {
-      "path": "pages/login/login",
-      "style": {
-        "navigationBarTitleText": "登录"
-      }
     }
-  ],
+      ,{
+            "path" : "pages/login/login",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+    ],
   "globalStyle": {
     "navigationBarTextStyle": "black",
     "navigationBarTitleText": "uni-app",
     "navigationBarBackgroundColor": "#F8F8F8",
     "backgroundColor": "#F8F8F8"
+  },
+  "condition": { //模式配置，仅开发期间生效
+  	"current": 0, //当前激活的模式（list 的索引项）
+  	"list": [
+  		{
+  			"name": "login",
+  			"path": "pages/login/login"
+  		}
+  	]
   }
 }
