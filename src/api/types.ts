@@ -1,5 +1,5 @@
 export interface ApiResp {
-  code: number
+  code: number | string
   msg: string
-  data: unknown
+  data?: unknown
 }

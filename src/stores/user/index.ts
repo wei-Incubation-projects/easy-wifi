@@ -6,7 +6,7 @@ export const useUserStore = defineStore('user', {
     token: ''
   }),
   persist: {
-    key: 'store-key',
+    key: 'user-key',
     storage: {
       setItem: uni.setStorageSync,
       getItem: uni.getStorageSync

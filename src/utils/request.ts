@@ -3,9 +3,11 @@ import md5 from 'blueimp-md5'
 import { PreQuest, create } from '@prequest/miniprogram'
 import type { MiddlewareCallback } from '@prequest/types'
 import { useUserStore } from '@/stores/user'
-import { generateRandomString } from './common'
+import { useConfigStore } from '@/stores/config'
+import type { ApiResp } from '@/api/types'
 
 const userStore = useUserStore()
+const configStore = useConfigStore()
 
 declare module '@prequest/types' {
   interface PQRequest {
@@ -30,19 +32,13 @@ const lock = new Lock({
   }
 })
 const wrapper = Lock.createLockWrapper(lock)
+
+// 设置通用参数
 const requestSetParam: MiddlewareCallback = async (ctx, next) => {
-  const commonParam: CommonParam = {
-    nonce_str: generateRandomString(16),
-    sign_type: 'MD5',
-    sys_hash: 'eccbc87e4b5ce2fe328308fd9f2a7baf3',
-    env: 'test',
-    uid: 'eccbc87e4b5ce2fe328308fd9f2a7baf3',
-    iv: md5('eccbc87e4b5ce2fe328308fd9f2a7baf3')
-  }
-  const params = Object.assign({ ...ctx.request.params }, commonParam)
-  params.sign = md5(JSON.stringify(params))
-  console.log(params)
+  const params = Object.assign({ ...ctx.request.params }, configStore.getQueryParms)
+  params.sign = md5(JSON.stringify(params)).toUpperCase()
   ctx.request.params = params
+  console.log('request: ' + JSON.stringify(ctx.request))
   next()
 }
 
@@ -71,15 +67,23 @@ const refreshToken: MiddlewareCallback = async (ctx, next) => {
   await next()
 }
 
-const parse: MiddlewareCallback = async (ctx, next) => {
+const responeParse: MiddlewareCallback = async (ctx, next) => {
   await next()
-  const { statusCode } = ctx.response
+  const { statusCode, data } = ctx.response
+  console.log('status: ' + statusCode)
+  console.log('response :', ctx.response)
   if (![200, 301, 302].includes(statusCode)) {
     throw new Error(`${statusCode}`)
   }
+  const result: ApiResp = data
+  if (result.code == 777) {
+    uni.showToast({ title: result.msg, icon: 'fail' })
+    return
+  }
+  return Promise.resolve(result.data)
 }
 
 // prequest.use(refreshToken).use(parse)
-prequest.use(requestSetParam)
+prequest.use(requestSetParam).use(responeParse)
 
 export default prequest

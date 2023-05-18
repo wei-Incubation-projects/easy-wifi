@@ -4,7 +4,7 @@ import prequest from '@/utils/request'
 
 class LoginService {
   static getLoingConfig() {
-    return prequest.post<LoginModel.GetLoninConfigResp>('/wx/baseinfo/login')
+    return prequest.post<LoginModel.LoginConfig>('/wx/baseinfo/login')
   }
 }
 

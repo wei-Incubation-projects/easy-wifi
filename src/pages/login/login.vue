@@ -1,35 +1,23 @@
 <template>
-  <view class="login_main">
-    <view class="top">
-      <image :src="loginConfig.logo"></image>
-      <view>{{ loginConfig.page_title }}</view>
-      <view
-        :style="{
-          color: loginConfig.big_label.color,
-          fontSize: loginConfig.big_label.font_size,
-          fontWeight: loginConfig.big_label.font_size
-        }"
-        >{{ loginConfig.big_label.text }}</view
-      >
-    </view>
-    <view class="button">
-      <button>{{ loginConfig.btn }}</button>
-      <view>
-        <text>{{ loginConfig.agree_text }}</text>
-      </view>
-    </view>
-  </view>
+  <img :src="loginConfigs.logo" />
+  <view class="login_main">登录 </view>
 </template>
 
 <script setup lang="ts">
 import { LoginService, type LoginModel } from '@/api/login'
-import { ref, toRefs, onMounted } from 'vue'
+import { useConfigStore } from '@/stores/config'
+import { storeToRefs } from 'pinia'
+import { ref, onMounted, reactive } from 'vue'
+
+const configStore = useConfigStore()
 const noAgree = ref<boolean>(false)
-const loginConfig = toRefs<LoginModel.LoginConfig>({} as LoginModel.LoginConfig)
+const { loginConfig } = storeToRefs(configStore)
+// const loginConfigs = configStore.getLoginConfig
+let loginConfigs = reactive({} as LoginModel.LoginConfig)
 const getConfig = async () => {
   const result = await LoginService.getLoingConfig()
+  loginConfigs = { ...(await configStore.getLoginConfig) }
   console.log(result)
-  // loginConfig = { ...(result.data as LoginModel.LoginConfig) }
 }
 onMounted(() => getConfig())
 </script>
