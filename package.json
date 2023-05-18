@@ -73,7 +73,7 @@
     "@dcloudio/vite-plugin-uni": "3.0.0-alpha-3070720230316001",
     "@prequest/types": "^1.5.2",
     "@types/blueimp-md5": "^2.18.0",
-    "@types/node": "^20.1.7",
+    "@types/node": "^20.2.0",
     "@typescript-eslint/eslint-plugin": "^5.59.6",
     "@typescript-eslint/parser": "^5.59.6",
     "@vue/tsconfig": "^0.1.3",
