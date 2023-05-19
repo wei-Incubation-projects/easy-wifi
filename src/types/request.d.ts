@@ -6,5 +6,4 @@ type CommonParam = {
   env: string
   uid: string
   iv: string
-  code: string
 }

@@ -28,6 +28,12 @@ export default ({ mode }) => {
       alias: {
         '@': path.resolve(__dirname, 'src') // 路径别名配置
       }
+    },
+    build: {
+      // transpileDependencies: [/prequest/],
+      rollupOptions: {
+        external: ['/node_modules/(?!prequest)/']
+      }
     }
   })
 }

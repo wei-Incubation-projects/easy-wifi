@@ -21,11 +21,12 @@ export const hashTo32BitString = (input: string): string => {
   return hexString.substr(0, 8)
 }
 
-export const generateParamSign = (param: Record<string, any>): string => {
+export const generateParamSign = (param: Record<string, any>, key: string): string => {
   const sortedKeys = Object.keys(param).sort()
   let sign = ''
   sortedKeys.forEach((key) => {
     sign += `${key}=${param[key]}&`
   })
+  sign += `key=${key}`
   return sign.replace(/&$/, '')
 }

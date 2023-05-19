@@ -10,7 +10,7 @@ node_modules
 
 # conifg
 .env.development
-src/manifest.json
+./src/manifest.json
 .DS_Store
 dist
 *.local
