@@ -55,8 +55,6 @@
     "@dcloudio/uni-mp-toutiao": "3.0.0-alpha-3070720230316001",
     "@dcloudio/uni-mp-weixin": "3.0.0-alpha-3070720230316001",
     "@dcloudio/uni-quickapp-webview": "3.0.0-alpha-3070720230316001",
-    "@prequest/core": "^1.5.2",
-    "@prequest/lock": "^1.5.2",
     "@prequest/miniprogram": "^1.5.2",
     "blueimp-md5": "^2.19.0",
     "crypto-js": "^4.1.1",

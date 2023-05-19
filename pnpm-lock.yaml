@@ -40,21 +40,12 @@ dependencies:
   '@dcloudio/uni-quickapp-webview':
     specifier: 3.0.0-alpha-3070720230316001
     version: 3.0.0-alpha-3070720230316001(postcss@8.4.23)(vue@3.3.2)
-  '@prequest/core':
-    specifier: ^1.5.2
-    version: 1.5.2
-  '@prequest/lock':
-    specifier: ^1.5.2
-    version: 1.5.2
   '@prequest/miniprogram':
     specifier: ^1.5.2
     version: 1.5.2
   blueimp-md5:
     specifier: ^2.19.0
     version: 2.19.0
-  crypto:
-    specifier: ^1.0.1
-    version: 1.0.1
   crypto-js:
     specifier: ^4.1.1
     version: 4.1.1
@@ -2899,13 +2890,6 @@ packages:
       qs: 6.11.2
     dev: false
 
-  /@prequest/lock@1.5.2:
-    resolution: {integrity: sha512-gf/vhL2ILK525SppYxkLEiFOul9uSnhaikVE3BtxVOQ1v0bEhuq+YKzxfu8FMtvrFhNe1gNTMPdzETyfooQr3w==}
-    engines: {node: '>=10'}
-    dependencies:
-      '@xdoer/x': 1.0.1
-    dev: false
-
   /@prequest/miniprogram@1.5.2:
     resolution: {integrity: sha512-0rYq8dno1A8sqFJHLFhz4Vw2jlWk3kGil5SRJGJKyQ8wmBHUO4tuXLnOcAjm70ysfzu+h7EabY7nWtidi6GDug==}
     engines: {node: '>=10'}
@@ -4196,11 +4180,6 @@ packages:
 
   /crypto-js@4.1.1:
     resolution: {integrity: sha512-o2JlM7ydqd3Qk9CA0L4NL6mTzU2sdx96a+oOfPu8Mkl/PK51vSyoi8/rQ8NknZtk44vq15lmhAj9CIAGwgeWKw==}
-    dev: false
-
-  /crypto@1.0.1:
-    resolution: {integrity: sha512-VxBKmeNcqQdiUQUW2Tzq0t377b54N2bMtXO/qiLa+6eRRmmC4qT3D4OnTGoT/U6O9aklQ/jTwbOtRMTTY8G0Ig==}
-    deprecated: This package is no longer supported. It's now a built-in Node module. If you've depended on crypto, you should switch to the one that's built-in.
     dev: false
 
   /css-font-size-keywords@1.0.0:

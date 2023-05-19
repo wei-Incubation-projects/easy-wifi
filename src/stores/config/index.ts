@@ -1,5 +1,6 @@
 import { LoginService, type LoginModel } from '@/api/login'
 import { generateRandomString } from '@/utils/common'
+import md5 from 'blueimp-md5'
 import { defineStore } from 'pinia'
 
 interface ConfigState {
@@ -13,7 +14,9 @@ export const useConfigStore = defineStore('config', {
     queryParms: {
       sign_type: 'MD5',
       sys_hash: import.meta.env.VITE_SYS_HASH,
-      env: import.meta.env.VITE_ENV
+      env: import.meta.env.VITE_ENV,
+      uid: 'loginBaseinfo',
+      code: 'loginBaseinfo'
     } as CommonParam
   }),
   persist: {

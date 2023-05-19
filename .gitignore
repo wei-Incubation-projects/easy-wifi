@@ -6,8 +6,11 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
-
 node_modules
+
+# conifg
+#.env.development
+src/manifest.json
 .DS_Store
 dist
 *.local
