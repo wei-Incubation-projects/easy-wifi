@@ -9,7 +9,7 @@ lerna-debug.log*
 node_modules
 
 # conifg
-#.env.development
+.env.development
 src/manifest.json
 .DS_Store
 dist
