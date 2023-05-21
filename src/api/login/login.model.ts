@@ -1,6 +1,17 @@
 import type { ApiResp } from '../types'
 
-export interface GetLoninConfigResp extends ApiResp {
+export interface GetMiniappCodeResp extends ApiResp<CookieData> {
+  data: CookieData
+}
+
+export interface CookieData {
+  cookie_data: {
+    key: string
+    uid: string
+  }
+  is_tip: boolean
+}
+export interface GetLoninConfigResp extends ApiResp<LoginConfig> {
   data: LoginConfig
 }
 
@@ -23,4 +34,14 @@ export interface LoginConfig {
   btn: string
   tb_ico: string
   agree_text: string
+}
+
+export interface UserPhone {
+  wx_encryptedData: string
+  wx_iv: string
+  wx_code: string
+}
+
+export interface GetPhoneLoginResp extends ApiResp<CookieData> {
+  data: CookieData
 }

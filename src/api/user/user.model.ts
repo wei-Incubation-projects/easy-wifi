@@ -9,6 +9,6 @@ export interface GetUserListData {
   position: number
 }
 
-export interface GetUserListResp extends ApiResp {
+export interface GetUserListResp extends ApiResp<GetUserListData[]> {
   data: GetUserListData[]
 }

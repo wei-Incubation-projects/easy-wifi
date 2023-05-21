@@ -40,16 +40,12 @@ const wrapper = Lock.createLockWrapper(lock)
 // 设置通用参数
 const requestSetParam: MiddlewareCallback = async (ctx, next) => {
   const commonParms = configStore.getQueryParms
-  let key = ''
-  if (!userStore.token) {
-    commonParms.iv = md5(commonParms.uid)
-    key = md5(commonParms.iv)
-  }
   const params = Object.assign({}, ctx.request.params, commonParms)
-  const np = generateParamSign(params, key)
-  console.log('签名对象: ', np)
+  // console.log('params', params)
+  const np = generateParamSign(params, configStore.key)
+  // console.log('签名对象: ', np)
   params.sign = md5(np).toUpperCase()
-  console.log('sign', params.sign)
+  // console.log('sign', params.sign)
   ctx.request.data = params
   await next()
 }
@@ -82,15 +78,16 @@ const refreshToken: MiddlewareCallback = async (ctx, next) => {
 const responeParse: MiddlewareCallback = async (ctx, next) => {
   await next()
   const { statusCode, data } = ctx.response
-  console.log('status: ' + statusCode)
-  console.log('response :', ctx.response.data.msg)
   if (![200, 301, 302].includes(statusCode)) {
     throw new Error(`${statusCode}`)
   }
-  const result: ApiResp = data
-  if (result.code == 777) {
+  const result: ApiResp<any> = data
+  if (result.data?.is_tip) {
     uni.showToast({ title: result.msg, icon: 'fail' })
-    // router.reLaunch('login')
+  }
+  if (result.code == 777) {
+    // uni.showToast({ title: result.msg, icon: 'fail' })
+    router.reLaunch('login')
   }
 }
 

@@ -1,5 +1,9 @@
-export interface ApiResp {
+export interface ApiResp<T> {
   code: number | string
   msg: string
-  data?: unknown
+  data:
+    | {
+        is_tip?: boolean
+      }
+    | T
 }

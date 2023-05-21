@@ -55,5 +55,11 @@ function back({ delta, data }: BackParams = { delta: 1, data: null }) {
   uni.$emit(eventName, data)
   uni.navigateBack({ delta })
 }
-
-export default { navigate, redirect, reLaunch, switchTab, back }
+const router = {
+  navigate,
+  redirect,
+  reLaunch,
+  switchTab,
+  back
+}
+export default router

@@ -1,6 +1,9 @@
 const mainPackage = {
   index: '/pages/index/index',
-  login: '/pages/login/login'
+  discover: '/pages/discover/discover',
+  mine: '/pages/mine/mine',
+  login: '/pages/login/login',
+  agreement: '/pages/agreement/agreement'
 }
 
 const subPackage = {
