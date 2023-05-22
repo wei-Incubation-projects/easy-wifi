@@ -1,15 +1,19 @@
 import type { DeepReadonly, UnwrapNestedRefs } from 'vue'
+import type { BackParams } from './types'
 import pages from './pages'
-import type { BackParams, CourseDetails } from './types'
-// import uni from '@dcloudio/vite-plugin-uni'
+import { useUserStore } from '@/stores/user'
+
+const userStore = useUserStore()
 type PageNames = keyof typeof pages
 
 const routeStore = {} as Record<PageNames, unknown>
 
-type ObjectType<T> = T extends 'courseDetails' ? CourseDetails : never
+// type ObjectType<T> = T extends 'courseDetails' ? CourseDetails : never
+type ObjectType<T> = Record<string, T>
 interface MyPageOptions {
   eventName?: string
 }
+
 // 获取路由参数
 export function getRouteParams<T extends PageNames>(
   page: T
@@ -55,6 +59,27 @@ function back({ delta, data }: BackParams = { delta: 1, data: null }) {
   uni.$emit(eventName, data)
   uni.navigateBack({ delta })
 }
+
+// 路由拦截
+const whiteList = ['agreement', 'login']
+function hasPermission<T extends PageNames>(page: T): boolean {
+  if (whiteList.indexOf(page) !== -1 || userStore.token) {
+    return true
+  }
+  return false
+}
+Object.keys(pages).forEach((key: string) => {
+  uni.addInterceptor(key, {
+    invoke(e) {
+      if (!hasPermission(key as PageNames)) {
+        redirect('login')
+        return false
+      }
+      return true
+    }
+  })
+})
+
 const router = {
   navigate,
   redirect,

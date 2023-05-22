@@ -41,11 +41,13 @@ const wrapper = Lock.createLockWrapper(lock)
 const requestSetParam: MiddlewareCallback = async (ctx, next) => {
   const commonParms = configStore.getQueryParms
   const params = Object.assign({}, ctx.request.params, commonParms)
-  // console.log('params', params)
+  console.log('-------------------')
+  console.log('requestPath', ctx.request.path)
+  console.log('params', params)
   const np = generateParamSign(params, configStore.key)
-  // console.log('签名对象: ', np)
+  console.log('签名对象: ', np)
   params.sign = md5(np).toUpperCase()
-  // console.log('sign', params.sign)
+  console.log('sign', params.sign)
   ctx.request.data = params
   await next()
 }
@@ -87,6 +89,8 @@ const responeParse: MiddlewareCallback = async (ctx, next) => {
   }
   if (result.code == 777) {
     // uni.showToast({ title: result.msg, icon: 'fail' })
+    userStore.$reset()
+    configStore.$reset()
     router.reLaunch('login')
   }
 }

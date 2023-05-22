@@ -1,15 +1,38 @@
 <template>
-  <view class="content">
-    <image class="logo" src="/static/logo.png" />
-    <view class="text-area">
-      <text class="title">{{ title }}</text>
-    </view>
-  </view>
+  <view class="content"> </view>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { HomeService, type HomeModel } from '@/api/home'
+import router from '@/router'
+import { useUserStore } from '@/stores/user'
+import { ref, onBeforeMount } from 'vue'
+
+const userStore = useUserStore()
 const title = ref('Hello')
+const menus = ref<Array<HomeModel.Menu>>([] as HomeModel.Menu[])
+
+const initialization = async () => {
+  console.log('token', userStore.token)
+  if (!userStore.token) {
+    router.reLaunch('login', { url: 'index' })
+  }
+  const homeData = await (await HomeService.getWifiIndex()).data
+  console.log(homeData)
+  console.log(homeData.data.bottom_menu)
+  if (homeData.code == 0) {
+    homeData.data.bottom_menu.forEach((item, key) => {
+      uni.setTabBarItem({
+        index: key,
+        text: item.label,
+        iconPath: item.icon,
+        selectedIconPath: '/static/'
+      })
+    })
+  }
+}
+
+onBeforeMount(() => initialization())
 </script>
 
 <style>
@@ -17,20 +40,6 @@ const title = ref('Hello')
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-}
-
-.logo {
-  height: 200rpx;
-  width: 200rpx;
-  margin-top: 200rpx;
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 50rpx;
-}
-
-.text-area {
-  display: flex;
   justify-content: center;
 }
 

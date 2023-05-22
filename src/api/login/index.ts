@@ -1,7 +1,6 @@
 import * as LoginModel from './login.model'
 
 import prequest from '@/utils/request'
-import type { UserPhone } from './login.model'
 
 class LoginService {
   static byMiniappCode(param: any) {
@@ -14,7 +13,7 @@ class LoginService {
       params: param
     })
   }
-  static byMiniappPhone(param: UserPhone) {
+  static byMiniappPhone(param: LoginModel.UserPhone) {
     return prequest.post<Promise<LoginModel.GetPhoneLoginResp>>('/wx/login/byMiniappPhone', {
       params: param
     })

@@ -21,17 +21,17 @@
       >
     </view>
     <view class="button">
-      <button
-        class="login"
-        :style="buttonColor"
-        :disabled="!noAgree"
-        open-type="getPhoneNumber"
-        hover-class="button-hover"
-        @getphonenumber="getUserPhone"
-        @click="tipAgree"
+      <view class="login" @click="tipAgree">
+        <button
+          :style="buttonColor"
+          :disabled="!noAgree"
+          open-type="getPhoneNumber"
+          hover-class="button-hover"
+          @getphonenumber="getUserPhone"
+        >
+          {{ loginConfig.btn }}
+        </button></view
       >
-        {{ loginConfig.btn }}
-      </button>
       <view class="agree">
         <view @click="changAgree">
           <checkbox class="checkbox" :checked="noAgree" />
@@ -117,13 +117,20 @@ const getUserPhone = async (e: any) => {
     const phoneLogin = await (await LoginService.byMiniappPhone(param)).data
     console.log(phoneLogin)
     const pcookie = phoneLogin.data.cookie_data.key.split('*_*_*')
-    configStore.$patch({
-      queryParms: { uid: phoneLogin.data.cookie_data.uid, iv: phoneLogin.data.cookie_data.key },
-      key: pcookie[1]
-    })
-    userStore.$patch({
-      token: pcookie[1]
-    })
+    if (phoneLogin.code == 0) {
+      configStore.$patch({
+        queryParms: { uid: phoneLogin.data.cookie_data.uid, iv: phoneLogin.data.cookie_data.key },
+        key: pcookie[1]
+      })
+      userStore.$patch({
+        token: pcookie[1]
+      })
+      if (userStore.token) {
+        console.log('conf', configStore.getQueryParms, configStore.key)
+        console.log('token', userStore.token)
+        router.switchTab('index')
+      }
+    }
   }
 }
 const changAgree = () => {
@@ -135,8 +142,7 @@ const tipAgree = () => {
   !noAgree.value && uni.showToast({ title: loginConfig.value.no_agree_tip, icon: 'fail' })
 }
 const agreenText = (e: any) => {
-  console.log(e)
-  uni.navigateTo({ url: 'https://gw.qianduoduo.tech/wx/baseinfo/agreement/35a33' })
+  router.redirect('agreement')
 }
 onBeforeMount(async () => await getConfig())
 onMounted(() => {
