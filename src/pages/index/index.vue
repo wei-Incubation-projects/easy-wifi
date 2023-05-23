@@ -1,5 +1,5 @@
 <template>
-  <view class="content"> </view>
+  <view class="content">功能开发中 </view>
 </template>
 
 <script setup lang="ts">
@@ -26,7 +26,7 @@ const initialization = async () => {
         index: key,
         text: item.label,
         iconPath: item.icon,
-        selectedIconPath: '/static/'
+        selectedIconPath: item.selected_icon
       })
     })
   }

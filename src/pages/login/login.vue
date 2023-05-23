@@ -142,7 +142,7 @@ const tipAgree = () => {
   !noAgree.value && uni.showToast({ title: loginConfig.value.no_agree_tip, icon: 'fail' })
 }
 const agreenText = (e: any) => {
-  router.redirect('agreement')
+  router.navigate('agreement', {})
 }
 onBeforeMount(async () => await getConfig())
 onMounted(() => {

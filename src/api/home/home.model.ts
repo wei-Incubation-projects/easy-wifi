@@ -14,5 +14,6 @@ export interface HomeData {
 export interface Menu {
   icon: string
   label: string
+  selected_icon: string
   template: string
 }
