@@ -85,6 +85,7 @@ const router = {
   redirect,
   reLaunch,
   switchTab,
-  back
+  back,
+  pages
 }
 export default router

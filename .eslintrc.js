@@ -18,7 +18,7 @@ module.exports = {
     sourceType: 'module',
     ecmaVersion: 'latest'
   },
-  plugins: ['vue', '@typescript-eslint'],
+  plugins: ['vue', '@typescript-eslint', 'uniapp'],
   rules: {
     'vue/multi-word-component-names': 'off'
   },

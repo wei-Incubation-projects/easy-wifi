@@ -115,9 +115,8 @@ const getUserPhone = async (e: any) => {
       wx_code: e.target.code
     } as LoginModel.UserPhone
     const phoneLogin = await (await LoginService.byMiniappPhone(param)).data
-    console.log(phoneLogin)
-    const pcookie = phoneLogin.data.cookie_data.key.split('*_*_*')
     if (phoneLogin.code == 0) {
+      const pcookie = phoneLogin.data.cookie_data.key.split('*_*_*')
       configStore.$patch({
         queryParms: { uid: phoneLogin.data.cookie_data.uid, iv: phoneLogin.data.cookie_data.key },
         key: pcookie[1]
@@ -128,7 +127,9 @@ const getUserPhone = async (e: any) => {
       if (userStore.token) {
         console.log('conf', configStore.getQueryParms, configStore.key)
         console.log('token', userStore.token)
-        router.switchTab('index')
+        setTimeout(() => {
+          router.switchTab('index')
+        }, 2000)
       }
     }
   }
@@ -138,7 +139,6 @@ const changAgree = () => {
   buttonColor.value.backgroundColor = noAgree.value ? '#2eb5f0' : 'rgb(201, 199, 199)'
 }
 const tipAgree = () => {
-  console.log(1)
   !noAgree.value && uni.showToast({ title: loginConfig.value.no_agree_tip, icon: 'fail' })
 }
 const agreenText = (e: any) => {

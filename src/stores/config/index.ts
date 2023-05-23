@@ -15,13 +15,13 @@ export const useConfigStore = defineStore('config', {
     } as CommonParam,
     key: ''
   }),
-  // persist: {
-  //   key: 'config-key',
-  //   storage: {
-  //     setItem: uni.setStorageSync,
-  //     getItem: uni.getStorageSync
-  //   }
-  // },
+  persist: {
+    key: 'config-key',
+    storage: {
+      setItem: uni.setStorageSync,
+      getItem: uni.getStorageSync
+    }
+  },
   getters: {
     getQueryParms(): CommonParam {
       this.queryParms.nonce_str = generateRandomString(32)

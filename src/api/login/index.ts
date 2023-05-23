@@ -5,17 +5,17 @@ import prequest from '@/utils/request'
 class LoginService {
   static byMiniappCode(param: any) {
     return prequest.post<Promise<LoginModel.GetMiniappCodeResp>>('/wx/login/byMiniappCode', {
-      params: param
+      data: param
     })
   }
   static getLoingConfig(param: any) {
     return prequest.post<Promise<LoginModel.GetLoninConfigResp>>('/wx/baseinfo/login', {
-      params: param
+      data: param
     })
   }
   static byMiniappPhone(param: LoginModel.UserPhone) {
     return prequest.post<Promise<LoginModel.GetPhoneLoginResp>>('/wx/login/byMiniappPhone', {
-      params: param
+      data: param
     })
   }
 }
