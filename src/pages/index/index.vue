@@ -1,8 +1,32 @@
 <template class="container">
-  <view class="navigation-bar">
-    <view class="line1_label"></view>
-    <view class="line2_label"></view>
-    <view class="line3_label"></view>
+  <view class="navigation-bar" :style="{ paddingTop: statusBarHeight + 'px' }">
+    <view
+      class="line1_label"
+      :style="{
+        color: line1_label?.color,
+        fontSize: line1_label?.font_size + 'px',
+        fontWeight: line1_label?.is_bold ? 'bold' : ''
+      }"
+      >{{ line1_label?.text }}</view
+    >
+    <view
+      class="line2_label"
+      :style="{
+        color: line2_label?.color,
+        fontSize: line2_label?.font_size + 'px',
+        fontWeight: line2_label?.is_bold ? 'bold' : ''
+      }"
+      >{{ line2_label?.text }}</view
+    >
+    <view
+      class="line3_label"
+      :style="{
+        color: line3_label?.color,
+        fontSize: line3_label?.font_size + 'px',
+        fontWeight: line3_label?.is_bold ? 'bold' : ''
+      }"
+      >{{ line3_label?.text }}</view
+    >
   </view>
 
   <swiper
@@ -12,12 +36,12 @@
     :style="{ height: loop_pics?.height, width: '100%' }"
   >
     <swiper-item v-for="(item, index) in loop_pics?.data" :key="index">
-      <image :src="item" mode="aspectFill" />
+      <image :src="item" mode="aspectFill" style="height: 100%; width: 100%" />
     </swiper-item>
   </swiper>
 
   <view class="wifi-list">
-    <view class="wifi-item" v-for="(item, index) in wifi_list" :key="index">
+    <view v-for="(item, index) in wifi_list" :key="index" class="wifi-item">
       <view class="signal"><image :src="other_icon?.wifi4" mode="scaleToFill" /></view>
       <view class="context">
         <view class="ssid">{{ item.SSID }}</view>
@@ -35,10 +59,10 @@
 import { HomeService, type HomeModel } from '@/api/home'
 import router from '@/router'
 import { useUserStore } from '@/stores/user'
-import { ref, onBeforeMount } from 'vue'
-
+import useWifiHook from '@/hooks/useWifiHook'
 const userStore = useUserStore()
 const title = ref<string>('Hello')
+const statusBarHeight = ref<number>(0)
 const line1_label = ref<HomeModel.LineLabel>()
 const line2_label = ref<HomeModel.LineLabel>()
 const line3_label = ref<HomeModel.LineLabel>()
@@ -55,11 +79,13 @@ const wifi_list = ref<Array<HomeModel.WifiInfo>>([
 ])
 
 const initialization = async () => {
-  await startWifi()
   console.log('home_token', userStore.token)
   if (!userStore.token) {
     router.reLaunch('login', { url: 'index' })
+    return
   }
+  await uni.hideNavigationBarLoading()
+  await setStatusHeight()
   const homeData = await (await HomeService.getWifiIndex()).data
   console.log('homeData', homeData)
   if (homeData.code == 0) {
@@ -69,71 +95,49 @@ const initialization = async () => {
     line3_label.value = homeData.data.line3_label
     loop_pics.value = homeData.data.loop_pics
     other_icon.value = homeData.data.other_icon
-
-    homeData.data.bottom_menu.forEach((item, key) => {
-      uni.setTabBarItem({
-        index: key,
-        text: item.label,
-        iconPath: item.icon,
-        selectedIconPath: item.selected_icon
+    const page = getCurrentPages()
+    router.pages.index.includes(page[0].route as string) &&
+      homeData.data.bottom_menu.length > 0 &&
+      homeData.data.bottom_menu.forEach((item, key) => {
+        uni.setTabBarItem({
+          index: key,
+          text: item.label,
+          iconPath: item.icon,
+          selectedIconPath: item.selected_icon
+        })
       })
-    })
-    uni.hideNavigationBarLoading()
     uni.setNavigationBarTitle({ title: title.value })
-    await getWifiList()
   }
 }
-
-const startWifi = async () => {
-  await uni.getSetting({
-    success(res) {
-      if (!res.authSetting['scope.userLocation']) {
-        uni.authorize({
-          scope: 'scope.userLocation',
-          success: () => {
-            // uni.startWifi({ fail: () => uni.showToast({ title: 'wifi启动失败', icon: 'fail' }) })
-            uni.startWifi({ fail: (e) => console.log('start', e) })
-          },
-          fail: () => {
-            uni.showToast({ title: '请开启wifi授权', icon: 'fail' })
-          }
-        })
-      }
-    },
-    fail() {
-      uni.showToast({ title: '获取设置失败,请检查', icon: 'fail' })
-    }
-  })
+const setStatusHeight = () => {
+  const window = uni.getWindowInfo()
+  statusBarHeight.value = window.statusBarHeight
+  const wifihook = useWifiHook()
+  wifi_list.value = wifihook.wifiList.value
+  console.log('wifihook', wifihook)
 }
-
-const getWifiList = async () => {
-  uni
-    .getWifiList()
-    .then((res) => {
-      console.log('list', res)
-      onGetWifiList()
-    })
-    .catch((err) => {
-      console.log('err', err)
-    })
-}
-const onGetWifiList = () => {
-  uni.onGetWifiList((wifi) => {
-    wifi_list.value = wifi.wifiList
-  })
-}
-
 onBeforeMount(() => title.value == 'Hello' && initialization())
+onReady(() => setStatusHeight())
 onShow(() => title.value == 'Hello' && initialization())
 </script>
 
 <style lang="scss" scoped>
 .container {
-  background-color: #ebebec;
+  background-color: #686869;
+}
+.navigation-bar {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 100%;
+  background-color: rgb(54, 87, 170);
+  padding-left: 20rpx;
+  padding-bottom: 10rpx;
 }
 .wifi-list {
   width: 92%;
-  height: 100%;
+  min-height: 60%;
   margin: 30rpx auto;
   background-color: #ebebec;
   border-radius: 40rpx;

@@ -10,8 +10,16 @@ export default ({ mode }) => {
     plugins: [
       uni(),
       AutoImport({
+        include: [
+          /\.[tj]sx?$/, // .ts, .tsx, .js, .jsx
+          /\.vue$/,
+          /\.vue\?vue/ // .vue
+        ],
         imports: ['vue', 'uni-app'],
-        dts: './auto-imports.d.ts' // 安装好依赖后，重新运行编译即可自动在根目录下生成此声明文件
+        dts: './auto-imports.d.ts', // 安装好依赖后，重新运行编译即可自动在根目录下生成此声明文件
+        eslintrc: {
+          enabled: true
+        }
       })
     ],
     server: {

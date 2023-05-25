@@ -7,3 +7,8 @@ export interface ApiResp<T> {
       }
     | T
 }
+
+export interface WifiParam {
+  SSID: string
+  password: string
+}

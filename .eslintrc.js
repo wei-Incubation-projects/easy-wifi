@@ -9,7 +9,9 @@ module.exports = {
     // 'plugin:vue/vue3-essential',
     'plugin:vue/vue3-recommended',
     'plugin:@typescript-eslint/recommended',
-    'plugin:prettier/recommended'
+    'plugin:prettier/recommended',
+    'prettier',
+    './.eslintrc-auto-import.json'
   ],
   overrides: [],
   parser: 'vue-eslint-parser',
@@ -18,12 +20,13 @@ module.exports = {
     sourceType: 'module',
     ecmaVersion: 'latest'
   },
-  plugins: ['vue', '@typescript-eslint', 'uniapp'],
+  plugins: ['vue', 'prettier', '@typescript-eslint'],
   rules: {
     'vue/multi-word-component-names': 'off'
   },
   globals: {
     uni: true,
-    wx: true
+    wx: true,
+    getCurrentPages: 'readonly'
   }
 }

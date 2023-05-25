@@ -9,7 +9,7 @@ type PageNames = keyof typeof pages
 const routeStore = {} as Record<PageNames, unknown>
 
 // type ObjectType<T> = T extends 'courseDetails' ? CourseDetails : never
-type ObjectType<T> = Record<string, T>
+type ObjectType = Record<string, any>
 interface MyPageOptions {
   eventName?: string
 }
@@ -17,15 +17,15 @@ interface MyPageOptions {
 // 获取路由参数
 export function getRouteParams<T extends PageNames>(
   page: T
-): DeepReadonly<UnwrapNestedRefs<ObjectType<T>>> {
-  const p = routeStore[page] as ObjectType<T>
-  return readonly<ObjectType<T>>(p)
+): DeepReadonly<UnwrapNestedRefs<ObjectType>> {
+  const p = routeStore[page] as ObjectType
+  return readonly<ObjectType>(p)
 }
 
 // 处理多次点击
 let navigateLock = false
 // 路由转跳
-function navigate<T extends PageNames>(page: T, params: ObjectType<T>): Promise<any> | undefined {
+function navigate<T extends PageNames>(page: T, params: ObjectType): Promise<any> | undefined {
   if (navigateLock) return
   const eventName = Math.floor(Math.random() * 1000) + new Date().getTime() + '' // 生成唯一事件名
   navigateLock = true
@@ -39,16 +39,16 @@ function navigate<T extends PageNames>(page: T, params: ObjectType<T>): Promise<
   })
 }
 // 重定向
-function redirect<T extends PageNames>(page: T, params?: ObjectType<T>) {
+function redirect<T extends PageNames>(page: T, params?: ObjectType) {
   routeStore[page] = params
   uni.redirectTo({ url: pages[page] })
 }
 
-function reLaunch<T extends PageNames>(page: T, params?: ObjectType<T>) {
+function reLaunch<T extends PageNames>(page: T, params?: ObjectType) {
   routeStore[page] = params
   uni.reLaunch({ url: pages[page] })
 }
-function switchTab<T extends PageNames>(page: T, params?: ObjectType<T>) {
+function switchTab<T extends PageNames>(page: T, params?: ObjectType) {
   routeStore[page] = params
   uni.switchTab({ url: pages[page] })
 }
@@ -86,6 +86,7 @@ const router = {
   reLaunch,
   switchTab,
   back,
-  pages
+  pages,
+  getRouteParams
 }
 export default router

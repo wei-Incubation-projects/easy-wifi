@@ -11,13 +11,14 @@
     {
       "path": "pages/index/index",
       "style": {
-        "navigationBarTitleText": "首页"
+        "navigationBarTitleText": "首页",
+        "navigationStyle": "custom"
       }
     },
     {
       "path": "pages/discover/discover",
       "style": {
-        "navigationBarTitleText": "发现",
+        "navigationBarTitleText": "扫一扫",
         "enablePullDownRefresh": false
       }
     },
